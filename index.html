@@ -1,33 +1,992 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athos Soluções Digitais</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Athos Soluções Digitais</title>
+  <meta name="description" content="Soluções digitais para delivery: PDV, precificação de produtos, gestor de estoque e mais.">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #00c389;
+      --primary-dark: #009f71;
+      --secondary: #0f172a;
+      --dark: #0b1120;
+      --gray: #64748b;
+      --light: #f8fafc;
+      --card: #ffffff;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 20px 40px rgba(2, 8, 23, 0.15);
+    }
+
+    * {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .navbar {
+      backdrop-filter: blur(10px);
+      background: rgba(11, 17, 32, 0.92) !important;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #fff !important;
+    }
+
+    .navbar-brand span {
+      color: var(--primary);
+    }
+
+    .nav-link {
+      color: #e5e7eb !important;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      color: var(--primary) !important;
+    }
+
+    .btn-athos {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      padding: 12px 22px;
+      border-radius: 12px;
+      transition: 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0, 195, 137, 0.25);
+    }
+
+    .btn-athos:hover {
+      transform: translateY(-2px);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0, 195, 137, 0.35);
+    }
+
+    .btn-outline-athos {
+      border: 2px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      padding: 10px 22px;
+      transition: 0.3s ease;
+    }
+
+    .btn-outline-athos:hover {
+      background: #fff;
+      color: var(--secondary);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at top right, rgba(0, 195, 137, 0.20), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(0, 159, 113, 0.14), transparent 35%),
+        linear-gradient(135deg, #0b1120 0%, #111827 55%, #0f172a 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      padding-top: 90px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(0, 195, 137, 0.08);
+      border-radius: 50%;
+      right: -150px;
+      top: -100px;
+      filter: blur(20px);
+    }
+
+    .badge-athos {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(0, 195, 137, 0.12);
+      color: #7ef5cb;
+      border: 1px solid rgba(126, 245, 203, 0.16);
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      max-width: 600px;
+      margin-top: 18px;
+      margin-bottom: 28px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 14px 18px;
+      min-width: 140px;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .hero-stat span {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+    }
+
+    .dashboard-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .dashboard-window {
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .window-top {
+      background: #e2e8f0;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .window-body {
+      padding: 22px;
+      background: #f8fafc;
+    }
+
+    .screen-card {
+      border-radius: 16px;
+      padding: 18px;
+      background: white;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .screen-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0f172a;
+    }
+
+    .mini-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .mini-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      border-radius: 999px;
+    }
+
+    .section-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .section-subtitle {
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .feature-card,
+    .benefit-card,
+    .pricing-card,
+    .testimonial-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 22px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+      height: 100%;
+      transition: 0.3s ease;
+      border: 1px solid #eef2f7;
+    }
+
+    .feature-card:hover,
+    .benefit-card:hover,
+    .pricing-card:hover,
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 195, 137, 0.1);
+      color: var(--primary-dark);
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h4,
+    .benefit-card h4,
+    .pricing-card h4,
+    .testimonial-card h5 {
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p,
+    .benefit-card p,
+    .testimonial-card p {
+      color: var(--gray);
+      margin-bottom: 0;
+    }
+
+    .bg-soft {
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .mockup-section {
+      background: #0b1120;
+      color: white;
+    }
+
+    .mockup-box {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .check-list li {
+      list-style: none;
+      margin-bottom: 12px;
+      color: #dbe4ee;
+    }
+
+    .check-list li::before {
+      content: "✔";
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color: #fff;
+      border: 1px solid rgba(0, 195, 137, 0.25);
+      transform: scale(1.02);
+    }
+
+    .pricing-card.featured p,
+    .pricing-card.featured li,
+    .pricing-card.featured .small-text {
+      color: #cbd5e1;
+    }
+
+    .price {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .pricing-card ul {
+      padding-left: 0;
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-card li {
+      list-style: none;
+      margin-bottom: 12px;
+      color: var(--gray);
+    }
+
+    .pricing-card li::before {
+      content: "•";
+      color: var(--primary);
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 50px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      background: rgba(0, 195, 137, 0.14);
+      border-radius: 50%;
+      right: -80px;
+      bottom: -80px;
+      filter: blur(10px);
+    }
+
+    .faq-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: 14px;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: rgba(0, 195, 137, 0.08);
+      color: #0f172a;
+      box-shadow: none;
+    }
+
+    .accordion-button:focus {
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    footer {
+      background: #0b1120;
+      color: #cbd5e1;
+    }
+
+    footer a {
+      color: #cbd5e1;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    .floating-whatsapp {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 12px 25px rgba(34, 197, 94, 0.35);
+      z-index: 999;
+    }
+
+    @media (max-width: 991px) {
+      .hero {
+        min-height: auto;
+        padding: 120px 0 70px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.7rem;
+      }
+
+      .dashboard-card {
+        margin-top: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Bem-vindo à Athos Soluções Digitais</h1>
-    </header>
-    <section>
-        <h2>Sobre Nós</h2>
-        <p>A Athos Soluções Digitais oferece soluções inovadoras para melhorar a eficiência do seu negócio. Estamos comprometidos em fornecer ferramentas de alta qualidade que atendem suas necessidades empresariais.</p>
-    </section>
-    <section>
-        <h2>Serviços Oferecidos</h2>
-        <ul>
-            <li>PDV - Sistema de Ponto de Venda</li>
-            <li>Gestores de Pedidos</li>
-            <li>Controle de Estoques</li>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        Athos <span>Soluções Digitais</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menuNavbar">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-lg-3">
+          <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="#solucoes">Soluções</a></li>
+          <li class="nav-item"><a class="nav-link" href="#beneficios">Benefícios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#planos">Planos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
         </ul>
-    </section>
-    <section>
-        <h2>Entre em Contato</h2>
-        <p>Estamos prontos para ajudar o seu negócio a crescer. <strong>Entre em contato conosco hoje mesmo!</strong></p>
-        <button><a href="mailto:contato@athossolucoes.com">Contato</a></button>
-    </section>
-    <footer>
-        <p>&copy; 2026 Athos Soluções Digitais</p>
-    </footer>
+        <a href="#contato" class="btn btn-athos">Solicitar demonstração</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="badge-athos">Sistema inteligente para delivery, restaurantes e operações comerciais</div>
+          <h1>
+            Transforme a gestão do seu negócio com a <span>Athos Soluções Digitais</span>
+          </h1>
+          <p>
+            Organize vendas, controle estoque, faça precificação com mais segurança e tenha um PDV moderno para acelerar seu atendimento e aumentar seus resultados.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#contato" class="btn btn-athos">Quero uma demonstração</a>
+            <a href="#solucoes" class="btn btn-outline-athos">Ver soluções</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong>PDV rápido</strong>
+              <span>Mais agilidade no caixa</span>
+            </div>
+            <div class="hero-stat">
+              <strong>Estoque</strong>
+              <span>Controle em tempo real</span>
+            </div>
+            <div class="hero-stat">
+              <strong>Precificação</strong>
+              <span>Mais lucro e controle</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="dashboard-card">
+            <div class="dashboard-window">
+              <div class="window-top">
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+              </div>
+              <div class="window-body">
+                <div class="screen-card">
+                  <div class="screen-title">Painel de Vendas</div>
+                  <div class="mini-bar"><span style="width: 86%;"></span></div>
+                  <div class="mini-bar"><span style="width: 62%;"></span></div>
+                  <div class="mini-bar"><span style="width: 74%;"></span></div>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="screen-card h-100">
+                      <div class="screen-title">Gestão de Estoque</div>
+                      <div class="mini-bar"><span style="width: 90%;"></span></div>
+                      <div class="mini-bar"><span style="width: 55%;"></span></div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="screen-card h-100">
+                      <div class="screen-title">Precificação</div>
+                      <div class="mini-bar"><span style="width: 78%;"></span></div>
+                      <div class="mini-bar"><span style="width: 66%;"></span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="screen-card mt-3">
+                  <div class="screen-title">Resumo Operacional</div>
+                  <div class="mini-bar"><span style="width: 88%;"></span></div>
+                  <div class="mini-bar"><span style="width: 47%;"></span></div>
+                  <div class="mini-bar"><span style="width: 71%;"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </section>
+
+  <!-- CLIENTES / DESTAQUES -->
+  <section class="py-5 bg-soft">
+    <div class="container">
+      <div class="row text-center g-4">
+        <div class="col-md-3 col-6">
+          <h5 class="fw-bold mb-1">PDV inteligente</h5>
+          <p class="text-secondary mb-0">Atendimento mais rápido</p>
+        </div>
+        <div class="col-md-3 col-6">
+          <h5 class="fw-bold mb-1">Precificação segura</h5>
+          <p class="text-secondary mb-0">Cálculo mais estratégico</p>
+        </div>
+        <div class="col-md-3 col-6">
+          <h5 class="fw-bold mb-1">Estoque eficiente</h5>
+          <p class="text-secondary mb-0">Menos perdas e mais controle</p>
+        </div>
+        <div class="col-md-3 col-6">
+          <h5 class="fw-bold mb-1">Foco em delivery</h5>
+          <p class="text-secondary mb-0">Mais organização operacional</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUÇÕES -->
+  <section class="py-5 py-lg-6" id="solucoes">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Soluções pensadas para o seu negócio</h2>
+        <p class="section-subtitle">
+          A Athos Soluções Digitais oferece ferramentas práticas para modernizar a operação, reduzir erros e melhorar a gestão do seu delivery ou comércio.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card">
+            <div class="icon-box">PDV</div>
+            <h4>Sistema PDV</h4>
+            <p>
+              Registre vendas com rapidez, tenha mais controle no caixa e ofereça um atendimento mais profissional para sua operação.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card">
+            <div class="icon-box">R$</div>
+            <h4>Precificação</h4>
+            <p>
+              Calcule preços com base em custos, margem de lucro e despesas operacionais para vender com mais segurança.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card">
+            <div class="icon-box">EST</div>
+            <h4>Gestor de Estoque</h4>
+            <p>
+              Acompanhe entradas, saídas e níveis de produtos em tempo real, evitando desperdícios e faltas no atendimento.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card">
+            <div class="icon-box">DEL</div>
+            <h4>Foco em Delivery</h4>
+            <p>
+              Organize pedidos, produtos, custos e operação de forma simples para ganhar produtividade no dia a dia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOCKUP / DIFERENCIAIS -->
+  <section class="py-5 mockup-section" id="beneficios">
+    <div class="container py-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <h2 class="section-title text-white mb-3">Menos improviso. Mais controle.</h2>
+          <p class="text-light opacity-75 mb-4">
+            A Athos foi pensada para negócios que precisam vender melhor, controlar custos e ter uma operação mais organizada sem complicação.
+          </p>
+
+          <ul class="check-list p-0">
+            <li>Controle centralizado das operações</li>
+            <li>Mais clareza sobre preços e margem</li>
+            <li>Redução de erros no atendimento e gestão</li>
+            <li>Mais produtividade no dia a dia</li>
+            <li>Estrutura moderna para crescer com o negócio</li>
+          </ul>
+
+          <a href="#contato" class="btn btn-athos mt-3">Falar com especialista</a>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="mockup-box">
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="screen-card">
+                  <div class="screen-title">Resumo Financeiro</div>
+                  <div class="mini-bar"><span style="width: 93%;"></span></div>
+                  <div class="mini-bar"><span style="width: 57%;"></span></div>
+                  <div class="mini-bar"><span style="width: 81%;"></span></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="screen-card h-100">
+                  <div class="screen-title">Pedidos</div>
+                  <div class="mini-bar"><span style="width: 72%;"></span></div>
+                  <div class="mini-bar"><span style="width: 64%;"></span></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="screen-card h-100">
+                  <div class="screen-title">Custos</div>
+                  <div class="mini-bar"><span style="width: 84%;"></span></div>
+                  <div class="mini-bar"><span style="width: 48%;"></span></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="screen-card">
+                  <div class="screen-title">Produtos mais vendidos</div>
+                  <div class="mini-bar"><span style="width: 88%;"></span></div>
+                  <div class="mini-bar"><span style="width: 69%;"></span></div>
+                  <div class="mini-bar"><span style="width: 56%;"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </section>
+
+  <!-- BENEFÍCIOS -->
+  <section class="py-5 bg-soft">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Por que escolher a Athos?</h2>
+        <p class="section-subtitle">
+          Soluções digitais com foco em gestão, organização e crescimento para negócios que vendem todos os dias.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="benefit-card">
+            <div class="icon-box">01</div>
+            <h4>Interface simples</h4>
+            <p>
+              Sistema intuitivo, direto e fácil de usar, reduzindo curva de aprendizado e ganhando tempo na operação.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="benefit-card">
+            <div class="icon-box">02</div>
+            <h4>Mais controle</h4>
+            <p>
+              Dados organizados para você acompanhar vendas, estoque, preços e desempenho do negócio com mais clareza.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="benefit-card">
+            <div class="icon-box">03</div>
+            <h4>Mais lucratividade</h4>
+            <p>
+              Uma boa precificação e um estoque bem controlado ajudam a proteger sua margem e reduzir prejuízos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section class="py-5" id="planos">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Planos para diferentes fases do seu negócio</h2>
+        <p class="section-subtitle">
+          Escolha a estrutura ideal para começar, organizar e escalar sua operação.
+        </p>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-4 col-md-6">
+          <div class="pricing-card">
+            <h4>Essencial</h4>
+            <p class="small-text">Para quem está começando a organizar a operação</p>
+            <div class="price">R$ 49<span style="font-size: 1rem;">/mês</span></div>
+            <ul>
+              <li>Controle básico de vendas</li>
+              <li>Cadastro de produtos</li>
+              <li>Gestão inicial de estoque</li>
+              <li>Suporte padrão</li>
+            </ul>
+            <a href="#contato" class="btn btn-athos w-100">Quero esse plano</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="pricing-card featured">
+            <span class="badge bg-success mb-3">Mais escolhido</span>
+            <h4>Profissional</h4>
+            <p class="small-text">Ideal para deliverys e operações em crescimento</p>
+            <div class="price">R$ 97,80<span style="font-size: 1rem;">/mês</span></div>
+            <ul>
+              <li>Sistema PDV completo</li>
+              <li>Precificação de produtos</li>
+              <li>Gestor de estoque</li>
+              <li>Painel operacional</li>
+              <li>Suporte prioritário</li>
+            </ul>
+            <a href="#contato" class="btn btn-athos w-100">Solicitar demonstração</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="pricing-card">
+            <h4>Enterprise</h4>
+            <p class="small-text">Para operações maiores e necessidades personalizadas</p>
+            <div class="price">Sob consulta</div>
+            <ul>
+              <li>Estrutura personalizada</li>
+              <li>Mais recursos operacionais</li>
+              <li>Acompanhamento dedicado</li>
+              <li>Configuração sob demanda</li>
+            </ul>
+            <a href="#contato" class="btn btn-athos w-100">Falar com consultor</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="py-5 bg-soft">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Quem busca controle, escolhe sistema</h2>
+        <p class="section-subtitle">
+          Um sistema certo ajuda sua empresa a crescer com mais organização, previsibilidade e eficiência.
+        </p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="testimonial-card">
+            <h5>Mais agilidade</h5>
+            <p>
+              Atendimento mais rápido, menos retrabalho e operação mais profissional desde o primeiro contato com o cliente.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="testimonial-card">
+            <h5>Mais organização</h5>
+            <p>
+              Produtos, custos, estoque e vendas centralizados em um só lugar, facilitando a gestão diária.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="testimonial-card">
+            <h5>Mais visão do negócio</h5>
+            <p>
+              Informações melhores para tomar decisões e ajustar preços, estoque e operação com mais inteligência.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-5">
+    <div class="container">
+      <div class="cta-section text-center" id="contato">
+        <h2 class="fw-bold mb-3">Sua operação pode vender mais com organização.</h2>
+        <p class="mb-4 text-light opacity-75">
+          Solicite uma demonstração da Athos Soluções Digitais e veja como simplificar o PDV, o estoque e a precificação do seu negócio.
+        </p>
+
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+          <a href="https://wa.me/5500000000000?text=Olá,%20quero%20uma%20demonstração%20da%20Athos%20Soluções%20Digitais" class="btn btn-athos">
+            Chamar no WhatsApp
+          </a>
+          <a href="mailto:contato@athossolucoesdigitais.com.br" class="btn btn-outline-athos">
+            Enviar e-mail
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-5" id="faq">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Perguntas frequentes</h2>
+        <p class="section-subtitle">
+          Respostas rápidas para dúvidas comuns sobre a plataforma.
+        </p>
+      </div>
+
+      <div class="accordion" id="faqAccordion">
+        <div class="faq-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+              A Athos é indicada para delivery?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Sim. A solução foi pensada para operações que precisam controlar pedidos, produtos, estoque e precificação com mais eficiência.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+              O sistema ajuda na precificação dos produtos?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Sim. A proposta é dar mais clareza sobre custos e margem, ajudando você a precificar com mais segurança.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+              Posso controlar estoque pelo sistema?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Sim. O sistema inclui gestão de estoque para acompanhar entradas, saídas e nível dos produtos.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+              Como solicito uma demonstração?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Você pode entrar em contato pelo botão de WhatsApp ou e-mail no final da página.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="pt-5 pb-4">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <h4 class="fw-bold text-white">Athos Soluções Digitais</h4>
+          <p class="mt-3">
+            Tecnologia para modernizar sua gestão, acelerar seu atendimento e trazer mais controle para o seu negócio.
+          </p>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h6 class="text-white fw-bold">Navegação</h6>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2"><a href="#inicio">Início</a></li>
+            <li class="mb-2"><a href="#solucoes">Soluções</a></li>
+            <li class="mb-2"><a href="#beneficios">Benefícios</a></li>
+            <li class="mb-2"><a href="#planos">Planos</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <h6 class="text-white fw-bold">Contato</h6>
+          <ul class="list-unstyled mt-3">
+            <li class="mb-2">WhatsApp: (00) 00000-0000</li>
+            <li class="mb-2">E-mail: contato@athossolucoesdigitais.com.br</li>
+            <li class="mb-2">Atendimento comercial digital</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="border-secondary my-4">
+      <div class="text-center">
+        <small>© <span id="currentYear"></span> Athos Soluções Digitais. Todos os direitos reservados.</small>
+      </div>
+    </div>
+  </footer>
+
+  <a class="floating-whatsapp" href="https://wa.me/5500000000000?text=Olá,%20quero%20saber%20mais%20sobre%20a%20Athos" target="_blank" aria-label="WhatsApp">
+    W
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+    const links = document.querySelectorAll('.nav-link');
+    const menu = document.querySelector('.navbar-collapse');
+
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (menu.classList.contains('show')) {
+          new bootstrap.Collapse(menu).hide();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
